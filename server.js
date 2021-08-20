@@ -34,18 +34,30 @@ io.on('connection',socket=>{
             socket.broadcast.
             to(user.room)
             .emit('message',formatMessage(botname,`${user.username} joined the chat`));
-        });
+        
+            io.to(user).emit('roomUsers',{
+              room:user.room,
+              users:getRoomUsers(user.room)
+            })
+          });
+
 
       socket.on('chatMessage',msg=>{
+         const user=getCurrentUser(socket.id);
+         io.to(user.room).emit('message',formatMessage(user.username,msg))
         io.emit('message', formatMessage('USER',msg));
           console.log(msg);
     });
 
     socket.on('disconnect',()=>{
-          io.emit('message', formatMessage(botname, 'A user left the chat  '))
+         const user=userLeave(socket.id);
+         if(user)
+         {
+         io.to(user.room).emit('message',formatMessage(botname,`${user.username} has left the chat`));  
+         }
+          // io.emit('message', formatMessage(botname, 'A user left the chat  '))
       });
-
-})
+});
 
 const PORT=3000||process.env.PORT;
 server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
