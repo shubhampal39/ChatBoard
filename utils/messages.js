@@ -1,6 +1,7 @@
 const moment = require('moment');
 
 function formatMessage(username, text) {
+    console.log("==",username,text);
   return {
     username,
     text,

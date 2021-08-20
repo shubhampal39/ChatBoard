@@ -32,23 +32,18 @@ io.on('connection',socket=>{
             socket.emit('message', formatMessage(botname,'welcome to chatBoard'));
            console.log("user==>",user);
             socket.broadcast.
-            to(user.name)
+            to(user.room)
             .emit('message',formatMessage(botname,`${user.username} joined the chat`));
         });
-
-      console.log("New WS Connection");    
-      socket.emit('message', formatMessage(botname,'welcome to chatBoard'));
-
-      socket.broadcast.emit('message', formatMessage(botname,'A user has joined the chat'));
-     
-      socket.on('disconnect',()=>{
-          io.emit('message', formatMessage(botname, 'A user left the chat  '))
-      });
 
       socket.on('chatMessage',msg=>{
         io.emit('message', formatMessage('USER',msg));
           console.log(msg);
     });
+
+    socket.on('disconnect',()=>{
+          io.emit('message', formatMessage(botname, 'A user left the chat  '))
+      });
 
 })
 

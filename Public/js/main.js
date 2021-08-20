@@ -27,6 +27,7 @@ chatForm.addEventListener('submit',(e)=>{
 });
 
 function outPutMessage(message){
+    console.log(message);
     const div=document.createElement('div');
     div.classList.add('message');
     div.innerHTML=`<p class="meta">${message.username}<span>${message.time}</span>
